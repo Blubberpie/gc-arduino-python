@@ -2,7 +2,7 @@
 
 Reads Gamecube controller inputs with an Arduino, and outputs values to serial.
 Python then reads and parses the serial output and uses the [vgamepad](https://pypi.org/project/vgamepad/)
-library to output to XInput.
+library to output as X360 or DS4.
 
 ## NOTE
 
