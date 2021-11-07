@@ -1,27 +1,38 @@
-# Python and Arduino Serial Communication Demo
+# About
 
-## Requirement
+Reads Gamecube controller inputs with an Arduino, and outputs values to serial.
+Python then reads and parses the serial output and uses the [vgamepad](https://pypi.org/project/vgamepad/)
+library to output to XInput.
 
-- Python3
-- [PySerial](https://pythonhosted.org/pyserial/)
-- [matplotlib](https://matplotlib.org/)
+## NOTE
 
-This should work (if your python3's pip is at pip3 use pip3 instead of pip)
+This is just a personal project, and is NOT meant to be optimized or well-documented. I just wanted
+to make use of my GC controllers lying around.
+
+## Hardware
+
+- Arduino Uno
+- Gamecube controller
+  - You don't need to cut the wire like they tell you. You can stick a bunch of pins into the end of the male plug.
+- 1k resistor
+
+## Arduino
+
+I used the library found at:
+
+https://github.com/brownan/Gamecube-N64-Controller
+
+and customized the code to print a specified data pattern to serial:
 ```
-pip install pyserial matplotlib
+Example:
+data,0,0,0,0,0,0,0,0,0,0,0,0,124,134,129,130,29,35
+
+Order:
+(tag),Start,Y,X,B,A,L,R,Z,D_UP,D_DOWN,D_RIGHT,D_LEFT,STICK_X,STICK_Y,C_X,C_Y,LT_ANALOG,RT_ANALOG
 ```
 
-## LightSwitch
+I ignored all the code for the N64 portion.
 
-Find matching sketch at
-https://create.arduino.cc/editor/piti118/d62e2b1e-f304-48b8-99cd-0d57f0375e1c/preview
-- barebone.py contains minimal code on how to talk to arduino
-- lightswitch.py simple GUI based on tkinter for turning on/off LED
+## Python
 
-## Realtime Plotting With Matplotlib
-
-Find matching sketch at https://create.arduino.cc/editor/piti118/9c083788-4653-48a6-860b-28302d9626ea/preview
-
-- streaming.py a simple gui which plot stuff in real time.
-
-Note that this uses a crazy baudrate of 250000. If the data get corrupted too often use lower baudrate.
+Just run `main.py`. You can change the thresholds of the sticks inside `button_mappings.py`.

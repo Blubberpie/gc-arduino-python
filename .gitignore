@@ -1,5 +1,3 @@
-*
-!.gitignore
-!main.py
-!Pipfile
-!README.md
+Pipfile.lock
+.idea/
+__pycache__/
