@@ -26,10 +26,14 @@ class Serial2Gamepad:
         """
         direction: 0 = x, 1 = y
         """
-        ret_val = (
-                          (gc_val - self.bm.stick_thresholds.get(self.controller_choice)[stick][direction][0]) * 2
-                          / self.bm.stick_thresholds.get(self.controller_choice)[stick][direction][2]
-                  ) - 1
+        stick_config = self.bm.stick_thresholds.get(self.controller_choice)[stick]
+
+        if len(stick_config) == 4:
+            if stick_config[direction + 2][0] <= gc_val <= stick_config[direction + 2][1]:
+                gc_val = stick_config[direction + 2][2]
+
+        ret_val = ((gc_val - stick_config[direction][0]) * 2 / stick_config[direction][2]) - 1
+
         return 1.0 if ret_val > 1.0 else -1.0 if ret_val < -1.0 else ret_val
 
     def _handle_triggers_and_sticks(self):
