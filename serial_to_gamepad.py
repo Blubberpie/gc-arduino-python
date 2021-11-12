@@ -7,11 +7,12 @@ from signal_handler import SignalHandler
 
 
 class Serial2Gamepad:
-    def __init__(self, ser: Serial, mode="x360"):
+    def __init__(self, ser: Serial, mode="x360", controller_choice=0):
         self.signal_handler = SignalHandler()
         self.ser = ser
         self.mode = mode
         self.inputs: list[int] = []
+        self.controller_choice = controller_choice
 
         self.bm = ButtonMappings()
 
@@ -26,8 +27,8 @@ class Serial2Gamepad:
         direction: 0 = x, 1 = y
         """
         ret_val = (
-                          (gc_val - self.bm.stick_thresholds[stick][direction][0]) * 2
-                          / self.bm.stick_thresholds[stick][direction][2]
+                          (gc_val - self.bm.stick_thresholds.get(self.controller_choice)[stick][direction][0]) * 2
+                          / self.bm.stick_thresholds.get(self.controller_choice)[stick][direction][2]
                   ) - 1
         return 1.0 if ret_val > 1.0 else -1.0 if ret_val < -1.0 else ret_val
 
