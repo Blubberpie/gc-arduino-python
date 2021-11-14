@@ -84,10 +84,10 @@ class Serial2Gamepad:
             self._handle_triggers_and_sticks()
             self.game_pad.update()
         except IndexError as e:
-            print("Error reading input")
+            print("Error reading input. Continuing...")
 
     def _send_inputs_ds4(self):
-        if len(self.inputs) > 0:
+        try:
             # Handle Buttons
             for btn in self.bm.buttons_list_ds4:
                 if bool(self.inputs[self.bm.all_buttons_positions_mapping.get(btn)]):
@@ -110,6 +110,8 @@ class Serial2Gamepad:
 
             self._handle_triggers_and_sticks()
             self.game_pad.update()
+        except IndexError as e:
+            print("Error reading input. Continuing...")
 
     def _decode_serial(self, raw_data):
         if raw_data is not None:
@@ -118,7 +120,7 @@ class Serial2Gamepad:
                 if split_data[0] == "data":
                     self.inputs = list(map(int, split_data[1:]))
             except Exception as e:
-                print(e)
+                print(f"Decoding error: {e}")
 
     def _read_serial(self):
         try:
