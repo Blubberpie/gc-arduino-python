@@ -111,7 +111,9 @@ class Serial2Gamepad:
             self._handle_triggers_and_sticks()
             self.game_pad.update()
         except IndexError as e:
-            print("Error reading input. Continuing...")
+            print(f"Error reading input. Continuing... | {e}")
+        except Exception as e:
+            print(f"Unknown error | {e}")
 
     def _decode_serial(self, raw_data):
         if raw_data is not None:
