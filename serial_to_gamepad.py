@@ -7,7 +7,7 @@ from signal_handler import SignalHandler
 
 
 class Serial2Gamepad:
-    def __init__(self, ser: Serial, mode="x360", controller_choice=0):
+    def __init__(self, ser: Serial, mode="ds4", controller_choice=0):
         self.signal_handler = SignalHandler()
         self.ser = ser
         self.mode = mode
@@ -73,7 +73,7 @@ class Serial2Gamepad:
         self.game_pad.update()
 
     def _send_inputs_x360(self):
-        if len(self.inputs) > 0:
+        try:
             # Handle Buttons
             for btn in self.bm.buttons_list_x360:
                 if bool(self.inputs[self.bm.all_buttons_positions_mapping.get(btn)]):
@@ -83,6 +83,8 @@ class Serial2Gamepad:
 
             self._handle_triggers_and_sticks()
             self.game_pad.update()
+        except IndexError as e:
+            print("Error reading input")
 
     def _send_inputs_ds4(self):
         if len(self.inputs) > 0:
@@ -127,13 +129,14 @@ class Serial2Gamepad:
 
     def _loop(self):
         print("Reading from serial...")
+        senders = {
+            'x360': self._send_inputs_x360,
+            'ds4': self._send_inputs_ds4
+        }
         while not self.signal_handler.kill_now:
             raw_data = self._read_serial()
             self._decode_serial(raw_data)
-            if self.mode == "x360":
-                self._send_inputs_x360()
-            elif self.mode == "ds4":
-                self._send_inputs_ds4()
+            senders[self.mode]()
 
     def start(self):
         self._loop()
