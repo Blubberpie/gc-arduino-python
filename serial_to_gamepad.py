@@ -243,7 +243,7 @@ class Serial2Gamepad:
         if raw_data is not None:
             try:
                 split_data = raw_data.split(",")
-                if split_data[0] == "data":
+                if len(split_data) > 0 and split_data[0] == "data":
                     self.inputs = list(map(int, split_data[1:]))
             except Exception as e:
                 print(f"Decoding error: {e}")
