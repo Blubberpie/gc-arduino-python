@@ -1,3 +1,4 @@
+import time
 from threading import Thread, Event
 
 from win32gui import GetForegroundWindow
@@ -14,6 +15,7 @@ class WinGUIThread(Thread):
     def run(self):
         while not self.stop_event.is_set():
             self.main()
+            time.sleep(0.055)
 
     def terminate(self):
         self.stop_event.set()

@@ -99,7 +99,7 @@ class Serial2Gamepad:
                     json.dump(self.config, f)
 
         except Exception as e:
-            print(f"Error reading calibration file! | {e}")
+            print(f"Error reading config file! | {e}")
             exit(0)
 
     def _calibrate_stick(self, stick: str):
